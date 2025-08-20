@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração | SEES Space</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ====== Tema claro + borda gradiente personalizada ====== */
+        :root {
+            --primary: #ffffff;
+            --secondary: #f5f5f5;
+            --accent: #64ffda;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --btn-bg: #e9e9e9;
+            --ink: #0a192f;
+            --gradient-borda: linear-gradient(90deg, #c084fc, #87cefa, #009c3b, #ffdf00);
+            --blue: #3a86ff;
+            --green: #2ec4b6;
+            --yellow: #ffbe0b;
+            --purple: #8338ec;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gradient-culture: linear-gradient(90deg, #8338ec, #3a86ff, #2ec4b6, #ffbe0b);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            padding-top: 100px;
+        }
+        
+        /* Header */
+        header#header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: saturate(180%) blur(8px);
+            z-index: 100;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        
+        header#header.scrolled {
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 70px;
+            margin-right: 5px;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        
+        #nav-menu ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        #nav-menu ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        #nav-menu ul li a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        #nav-menu ul li a:hover {
+            color: var(--accent);
+        }
+        
+        #nav-menu ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        #nav-menu ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* ====== Botões (cinza claro + borda gradiente personalizada) ====== */
+        .cta-button,
+        .primary-btn,
+        .secondary-btn,
+        .add-to-cart,
+        .submit-btn,
+        .menu-toggle,
+        .ai-btn {
+            background-color: var(--btn-bg);
+            color: var(--text-primary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 10px 20px;
+            background-image: linear-gradient(var(--btn-bg), var(--btn-bg)), var(--gradient-borda);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .ai-btn { padding: 8px 16px; font-size: 0.9rem; }
+        .menu-toggle { width: 60px; height: 60px; border-radius: 50%; padding: 0; }
+        .menu-toggle i { color: var(--ink); transition: transform 0.2s ease; }
+        .menu-toggle.active { transform: rotate(45deg); }
+        
+        .cta-button:hover,
+        .primary-btn:hover,
+        .secondary-btn:hover,
+        .add-to-cart:hover,
+        .submit-btn:hover,
+        .menu-toggle:hover,
+        .ai-btn:hover {
+            background-color: #dcdcdc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        /* Banner Carousel */
+        .carousel-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .carousel-track {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .carousel-slide {
+            width: 25%;
+            height: 100%;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+        
+        .slide-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideInUp 0.6s ease forwards 0.3s;
+        }
+        
+        .slide-content p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideInUp 0.6s ease forwards 0.6s;
+        }
+        
+        .slide-content .slide-cta {
+            margin-top: 20px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideInUp 0.6s ease forwards 0.9s;
+        }
+        
+        /* Controles do Carousel */
+        .carousel-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .nav-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .carousel-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255,255,255,0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .carousel-arrows:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .carousel-prev {
+            left: 20px;
+        }
+        
+        .carousel-next {
+            right: 20px;
+        }
+        
+        /* Progress Bar */
+        .carousel-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient-borda);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: progressBar 5s linear infinite;
+            z-index: 10;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark);
+            font-size: 2.5rem;
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #555;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .package-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .package-header {
+            padding: 20px;
+            color: white;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        /* Lite - Branco com sombra preta predominante */
+        .lite-header {
+            background: white;
+            color: var(--dark);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .lite-header .package-icon {
+            background: linear-gradient(135deg, #2ec4b6, #3a86ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Culture - Gradiente linear: Lilás, azul, verde e Amarelo */
+        .culture-header {
+            background: var(--gradient-culture);
+        }
+        
+        /* Black - Preto predominante */
+        .black-header {
+            background: var(--dark);
+        }
+        
+        .package-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .package-icon {
+            font-size: 1.8rem;
+        }
+        
+        .package-title {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        .package-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: rgba(255,255,255,0.1);
+            padding: 5px;
+        }
+        
+        .package-body {
+            padding: 20px;
+        }
+        
+        /* Corpo dos cards com cores específicas */
+        .package-card.lite-card {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .package-card.culture-card {
+            background: white;
+        }
+        
+        .package-card.black-card {
+            background: #2a2a3c;
+            color: white;
+        }
+        
+        .black-card .package-description,
+        .black-card .package-price,
+        .black-card .product-item-name,
+        .black-card .key-features li {
+            color: white;
+        }
+        
+        .black-card .product-item {
+            background-color: #3a3a4c;
+        }
+        
+        .black-card .product-item:hover {
+            background-color: #4a4a5c;
+        }
+        
+        .package-description {
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .package-price {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .package-price .original {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1rem;
+            margin-right: 5px;
+        }
+        
+        .package-price .discount {
+            color: var(--green);
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .products-list {
+            margin-bottom: 20px;
+        }
+        
+        .product-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: background-color 0.2s;
+        }
+        
+        .product-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .product-item-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        
+        .product-item-name {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .product-item-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .key-features {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+        
+        .key-features li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .key-features li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .package-footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        /* Barra inferior com gradiente para todos os cards */
+        .package-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-borda);
+            border-radius: 0 0 15px 15px;
+        }
+        
+        /* Modal Geral */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+        }
+        
+        .close-modal:hover {
+            color: var(--accent);
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .modal-video {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .modal-video video {
+            width: 100%;
+            display: block;
+        }
+        
+        .modal-features {
+            columns: 2;
+            column-gap: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .modal-features li {
+            margin-bottom: 10px;
+            break-inside: avoid;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        /* Modal Específico para Produto */
+        #productModal .modal-content {
+            padding: 0;
+        }
+        
+        #productModal .modal-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        #productModal .modal-body {
+            padding: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            header#header {
+                padding: 15px 5%;
+            }
+            
+            #nav-menu {
+                position: fixed;
+                top: 90px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+            }
+            
+            #nav-menu.active {
+                transform: translateY(0);
+            }
+            
+            #nav-menu ul {
+                flex-direction: column;
+            }
+            
+            #nav-menu ul li {
+                margin: 10px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .carousel-container {
+                height: 250px;
+            }
+            
+            .slide-content {
+                padding: 20px;
+            }
+            
+            .slide-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .slide-content p {
+                font-size: 1rem;
+            }
+            
+            .carousel-arrows {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-features {
+                columns: 1;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            body {
+                padding-top: 80px;
+            }
+            
+            #productModal .modal-content {
+                max-width: 95%;
+            }
+            
+            /* Mobile adaptations for smartphone demo */
+            .smartphone-demo-section {
+                margin: 40px 0 30px 0;
+            }
+            
+            .demo-title {
+                font-size: 2rem;
+            }
+            
+            .demo-subtitle {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+            
+            .phone-demo-container {
+                min-height: 500px;
+                padding: 20px 0;
+            }
+            
+            .phone {
+                --phone-height: 50em;
+                transform: scale(0.8);
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes progressBar {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        .package-card {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .package-card:nth-child(1) { animation-delay: 0.1s; }
+        .package-card:nth-child(2) { animation-delay: 0.2s; }
+        .package-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        /* Pausar animações quando hover no carousel */
+        .carousel-container:hover .carousel-progress {
+            animation-play-state: paused;
+        }
+
+        /* ===== SMARTPHONE DEMO STYLES ===== */
+        .smartphone-demo-section {
+            margin: 80px 0 60px 0;
+            text-align: center;
+        }
+        
+        .demo-header {
+            margin-bottom: 50px;
+        }
+        
+        .demo-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .phone-demo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
+            padding: 40px 0;
+        }
+        
+        /* Phone Styles */
+        .phone {
+            --phone-size: max(5px, 1vmin);
+            --phone-height: 60em;
+            --phone-pad: 1.25em;
+            --phone-border-radius: 6.666em;
+            --phone-gutter: calc(var(--phone-pad) * 2);
+            --phone-bg-blur: 0.333em;
+            --phone-button-width: 0.333em;
+            --phone-notch-height: 3.33em;
+            --phone-notch-width: 33.3%;
+            --phone-notch-radius: calc(var(--phone-border-radius) - calc(var(--phone-pad) * 2));
+            --phone-border-width: 0.4em;
+            --phone-deep-purple: 284;
+            --phone-c-h: var(--phone-deep-purple);
+            
+            position: relative;
+            z-index: 1;
+            aspect-ratio: 37/76;
+            background: black;
+            height: var(--phone-height);
+            border-radius: var(--phone-border-radius);
+            box-shadow: 0 0 0.1em 0.25em hsl(var(--phone-c-h), 20%, 25%), 0 0 0 var(--phone-border-width) hsl(var(--phone-c-h), 30%, 85%);
+            box-sizing: border-box;
+            font-size: var(--phone-size);
+        }
+
+        .phone:before {
+            content: '';
+            position: absolute;
+            top: var(--phone-border-radius);
+            right: calc(var(--phone-border-width) * -1);
+            bottom: var(--phone-border-radius);
+            left: calc(var(--phone-border-width) * -1);
+            border: 0.5em solid hsl(var(--phone-c-h), 20%, 30%);
+            border-left-width: 0;
+            border-right-width: 0;
+        }
+
+        .buttons {
+            position: absolute;
+            inset: calc(var(--phone-border-width) * -1);
+            pointer-events: none;
+        }
+        
+        .buttons .left, .buttons .right {
+            position: absolute;
+            width: var(--phone-button-width);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.5em;
+        }
+        
+        .buttons .left {
+            right: 100%;
+            top: calc(var(--phone-border-radius) * 2);
+        }
+        .buttons .left .button:nth-child(1) { height: 3em; margin-bottom: 0.5em; }
+        .buttons .right {
+            left: 100%;
+            transform: scale3d(-1, 1, 1);
+            top: calc(var(--phone-border-radius) * 3);
+        }
+        .buttons .right .button { height: 9.5em; }
+        .buttons .button {
+            background: hsl(var(--phone-c-h), 20%, 95%);
+            height: 6em;
+            box-shadow: inset -0.15em 0 0.1em black, inset 0 0 0.1em hsl(var(--phone-c-h), 30%, 90%), inset 0 0.2em 0.1em hsl(var(--phone-c-h), 30%, 90%), inset 0 -0.2em 0.1em hsl(var(--phone-c-h), 30%, 90%), inset -0.1em 0.333em 0.1em rgba(black, 0.5), inset -0.1em -0.333em 0.1em rgba(black, 0.5);
+            border-top-left-radius: 0.2em;
+            border-bottom-left-radius: 0.2em;
+        }
+
+        .screen-container {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--phone-border-radius);
+            border: var(--phone-pad) solid black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: calc(var(--phone-pad) * 2);
+        }
+
+        .screen-container:before {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            background: white;
+            width: 36.6%;
+            bottom: calc(var(--phone-pad) * 0.75);
+            height: calc(var(--phone-pad) * 0.5);
+            border-radius: calc(var(--phone-pad) * 0.25);
+            filter: drop-shadow(0 0.1em 0.25em rgba(black, 0.1));
+        }
+        
+        .bg {
+            position: absolute;
+            inset: 0;
+            background: black;
+            border-radius: calc(var(--phone-border-radius) - var(--phone-pad));
+            overflow: hidden;
+            transform: translateZ(0);
+        }
+        
+        .bg > .deep-purple {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            background: hsl(284, 100%, 50%);
+        }
+
+        .camera {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: var(--phone-notch-height);
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            pointer-events: none;
+            position: absolute;
+            z-index: 4;
+            top: calc(var(--phone-pad) * 2);
+            right: calc(50% - calc(var(--phone-notch-width) * 0.5));
+            margin-right: calc(var(--phone-pad) * 0.333);
+        }
+        
+        .camera:before {
+            content: "";
+            height: 33.3%;
+            aspect-ratio: 1;
+            border-radius: inherit;
+            box-shadow: inset 0 0 0.25em #4c4da3;
+            background: radial-gradient(#6667ac, transparent 50%) no-repeat 33.3% 10% / 75% 50%, radial-gradient(#4c4da3, transparent 50%) no-repeat 60% 85% / 50% 50%;
+            background-color: #080928;
+        }
+
+        .screen {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            flex-grow: 1;
+            box-sizing: border-box;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border-radius: calc(var(--phone-border-radius) - var(--phone-pad));
+        }
+
+        /* Swiper Styles */
+        .swiper {
+            width: 100%;
+            height: 100%;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            color: #f6f6f6;
+        }
+
+        .swiper-container-3d .swiper-slide-shadow-left,
+        .swiper-container-3d .swiper-slide-shadow-right {
+            background-image: none;
+        }
+        
+        .swiper-pagination {
+            position: absolute;
+            bottom: 15px !important;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .swiper-pagination-bullet {
+            background: #a9a9a9;
+            transition: all 0.5s ease 0s;
+            border-radius: 8px;
+            opacity: 0.8;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #ffc107;
+            width: 30px;
+        }
+        
+        .info {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            text-align: center;
+            background: linear-gradient(180deg, #fff0 0, #0008 50px), linear-gradient(180deg, #fff0 , #0009);
+            padding: 15px;
+            padding-top: 70px;
+            left: 0;
+            bottom: -100%;
+            box-sizing: border-box;
+            transition: bottom 0.5s ease 0s;
+        }
+
+        .swiper-slide-active .info {
+            bottom: 0;
+            transition: bottom 0.5s ease 0s;
+        }
+
+        .info span {
+            width: 100%;
+            margin: 0.25em 0;
+            display: inline-block;
+            padding: 0.55em 0.5em 0.55em 4em;
+            box-sizing: border-box;
+            color: #E6E6E6EE;
+            text-align: left;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 12px;
+            border-radius: 2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header igual ao código fornecido -->
+    <header id="header">
+        <div class="logo">
+            <img src="https://via.placeholder.com/70x70/64ffda/ffffff?text=SES" alt="Logo">
+            <span class="cta-button" href="index.html.html">SEES | Space</span>
+        </div>
+        <nav id="nav-menu">
+            <ul>
+                <li><a href="Explorarsolucoes.html">Softwares</a></li>
+                <li><a href="#testimonials">Feedbacks</a></li>
+                <li><a href="agendar.html">Contato</a></li>
+            </ul>
+        </nav>
+        <a href="#" class="primary-btn mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></a>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Nossos Pacotes</h1>
+        <p class="page-subtitle">Escolha o pacote ideal para suas necessidades: Lite para essencial, Culture para completo ou Black para premium.</p>
+        
+        <!-- Banner Carousel -->
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Slide 1 - Lite -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop&crop=center" alt="Banner Lite">
+                    <div class="slide-content">
+                        <h1>Apresentamos Lite</h1>
+                        <p>Leveza e simplicidade para o day a day, com foco em sustentabilidade e essencialidades.</p>
+                        <a href="#lite-package" class="cta-button slide-cta">Conhecer Lite</a>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 - Culture -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=400&fit=crop&crop=center" alt="Banner Culture">
+                    <div class="slide-content">
+                        <h1>Descubra Culture</h1>
+                        <p>Recursos completos para criatividade e colaboração em equipe, perfeito para empresas.</p>
+                        <a href="#culture-package" class="cta-button slide-cta">Explorar Culture</a>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 - Black -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=400&fit=crop&crop=center" alt="Banner Black">
+                    <div class="slide-content">
+                        <h1>Experimente Black</h1>
+                        <p>O máximo em recursos premium, IA avançada e suporte 24/7 para grandes organizações.</p>
+                        <a href="#black-package" class="cta-button slide-cta">Descobrir Black</a>
+                    </div>
+                </div>
+                
+                <!-- Slide 4 - Comparativo -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&crop=center" alt="Banner Comparativo">
+                    <div class="slide-content">
+                        <h1>Compare os Pacotes</h1>
+                        <p>Encontre a solução perfeita comparando recursos, preços e benefícios de cada pacote.</p>
+                        <a href="#packages-comparison" class="cta-button slide-cta">Ver Comparação</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles do Carousel -->
+            <button class="carousel-arrows carousel-prev" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-arrows carousel-next" id="nextBtn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <!-- Navegação por pontos -->
+            <div class="carousel-nav" id="carouselNav">
+                <div class="nav-dot active" data-slide="0"></div>
+                <div class="nav-dot" data-slide="1"></div>
+                <div class="nav-dot" data-slide="2"></div>
+                <div class="nav-dot" data-slide="3"></div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="carousel-progress" id="progressBar"></div>
+        </div>
+        
+        <div class="packages-grid">
+            <!-- Pacote Lite -->
+            <div class="package-card lite-card" id="lite-package">
+                <div class="package-header lite-header">
+                    <div class="package-title-container">
+                        <div class="package-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h2 class="package-title">Pacote Lite</h2>
+                    </div>
+                    <img src="https://via.placeholder.com/60x60/2ec4b6/ffffff?text=L" alt="Lite Logo" class="package-logo">
+                </div>
+                <div class="package-body">
+                    <p class="package-description">Versão leve e essencial para uso básico, ideal para iniciantes e foco em sustentabilidade.</p>
+                    
+                    <div class="package-price">
+                        <span class="original">R$245/mês</span>
+                        <span class="current">R$205/mês</span>
+                        <span class="discount">16% DE ECONOMIA</span>
+                    </div>
+                    
+                    <div class="products-list">
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-magic"></i></div>
+                            <div class="product-item-name">Artcom Lite</div>
+                            <button class="product-item-btn" data-product="artcom-lite">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-palette"></i></div>
+                            <div class="product-item-name">Space Arte Lite</div>
+                            <button class="product-item-btn" data-product="spacearte-lite">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-users"></i></div>
+                            <div class="product-item-name">FeedSpace Lite</div>
+                            <button class="product-item-btn" data-product="feedspace-lite">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="product-item-name">Space Email Lite</div>
+                            <button class="product-item-btn" data-product="spaceemail-lite">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-globe"></i></div>
+                            <div class="product-item-name">Space Navegador Lite</div>
+                            <button class="product-item-btn" data-product="spacenavegador-lite">Ver detalhes</button>
+                        </div>
+                    </div>
+                    
+                    <ul class="key-features">
+                        <li>Foco em sustentabilidade e essencialidades</li>
+                        <li>Recursos básicos para cada produto</li>
+                        <li>Ideal para usuários individuais e pequenas equipes</li>
+                        <li>Preço acessível</li>
+                    </ul>
+                    
+                    <div class="package-footer">
+                        <a href="#" class="cta-button">Assinar Pacote Lite</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pacote Culture -->
+            <div class="package-card culture-card" id="culture-package">
+                <div class="package-header culture-header">
+                    <div class="package-title-container">
+                        <div class="package-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h2 class="package-title">Pacote Culture</h2>
+                    </div>
+                    <img src="https://via.placeholder.com/60x60/8338ec/ffffff?text=C" alt="Culture Logo" class="package-logo">
+                </div>
+                <div class="package-body">
+                    <p class="package-description">Versão completa com todos os recursos para criação, colaboração e produtividade.</p>
+                    
+                    <div class="package-price">
+                        <span class="original">R$545/mês</span>
+                        <span class="current">R$436/mês</span>
+                        <span class="discount">20% DE ECONOMIA</span>
+                    </div>
+                    
+                    <div class="products-list">
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-magic"></i></div>
+                            <div class="product-item-name">Artcom Culture</div>
+                            <button class="product-item-btn" data-product="artcom-culture">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-palette"></i></div>
+                            <div class="product-item-name">Space Arte Culture</div>
+                            <button class="product-item-btn" data-product="spacearte-culture">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-users"></i></div>
+                            <div class="product-item-name">FeedSpace Culture</div>
+                            <button class="product-item-btn" data-product="feedspace-culture">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="product-item-name">Space Email Culture</div>
+                            <button class="product-item-btn" data-product="spaceemail-culture">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-globe"></i></div>
+                            <div class="product-item-name">Space Navegador Culture</div>
+                            <button class="product-item-btn" data-product="spacenavegador-culture">Ver detalhes</button>
+                        </div>
+                    </div>
+                    
+                    <ul class="key-features">
+                        <li>Recursos completos para cada produto</li>
+                        <li>Ferramentas de colaboração em tempo real</li>
+                        <li>Ideal para pequenas e médias empresas</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    
+                    <div class="package-footer">
+                        <a href="#" class="cta-button">Assinar Pacote Culture</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pacote Black -->
+            <div class="package-card black-card" id="black-package">
+                <div class="package-header black-header">
+                    <div class="package-title-container">
+                        <div class="package-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h2 class="package-title">Pacote Black</h2>
+                    </div>
+                    <img src="https://via.placeholder.com/60x60/1a1a2e/ffffff?text=B" alt="Black Logo" class="package-logo">
+                </div>
+                <div class="package-body">
+                    <p class="package-description">Versão premium com recursos avançados, suporte 24/7 e integrações exclusivas.</p>
+                    
+                    <div class="package-price">
+                        <span class="original">R$955/mês</span>
+                        <span class="current">R$716/mês</span>
+                        <span class="discount">25% DE ECONOMIA</span>
+                    </div>
+                    
+                    <div class="products-list">
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-magic"></i></div>
+                            <div class="product-item-name">Artcom Black</div>
+                            <button class="product-item-btn" data-product="artcom-black">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-palette"></i></div>
+                            <div class="product-item-name">Space Arte Black</div>
+                            <button class="product-item-btn" data-product="spacearte-black">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-users"></i></div>
+                            <div class="product-item-name">FeedSpace Black</div>
+                            <button class="product-item-btn" data-product="feedspace-black">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="product-item-name">Space Email Black</div>
+                            <button class="product-item-btn" data-product="spaceemail-black">Ver detalhes</button>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-item-icon"><i class="fas fa-globe"></i></div>
+                            <div class="product-item-name">Space Navegador Black</div>
+                            <button class="product-item-btn" data-product="spacenavegador-black">Ver detalhes</button>
+                        </div>
+                    </div>
+                    
+                    <ul class="key-features">
+                        <li>Recursos avançados e exclusivos</li>
+                        <li>IA generativa e analytics detalhados</li>
+                        <li>Ideal para grandes empresas e organizações</li>
+                        <li>Suporte 24/7 e integração total</li>
+                    </ul>
+                    
+                    <div class="package-footer">
+                        <a href="#" class="cta-button">Assinar Pacote Black</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Smartphone Carousel Section -->
+        <section class="smartphone-demo-section">
+            <div class="demo-header">
+                <h2 class="demo-title">Experimente no Seu Dispositivo</h2>
+                <p class="demo-subtitle">Veja como nossos produtos funcionam perfeitamente em qualquer dispositivo móvel</p>
+            </div>
+            
+            <div class="phone-demo-container">
+                <div class="phone">
+                    <div class="buttons">
+                        <div class="left">
+                            <div class="button"></div>
+                            <div class="button"></div>
+                            <div class="button"></div>
+                        </div>
+                        <div class="right">
+                            <div class="button"></div>
+                        </div>
+                    </div>
+                    <div class="camera"></div>
+                    <div class="screen-container">
+                        <div class="bg">
+                            <div class="deep-purple"></div>
+                        </div>
+                        
+                        <div class="screen">
+                            <div class="swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" data-bg-image="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=600&fit=crop">
+                                        <div class="info">
+                                            <span title="Produto">Artcom Lite</span>
+                                            <span title="Categoria">Criação com IA</span>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide" data-bg-image="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=600&fit=crop">
+                                        <div class="info">
+                                            <span title="Produto">Space Arte</span>
+                                            <span title="Categoria">Design Gráfico</span>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide" data-bg-image="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=600&fit=crop">
+                                        <div class="info">
+                                            <span title="Produto">FeedSpace</span>
+                                            <span title="Categoria">Colaboração</span>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide" data-bg-image="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=400&h=600&fit=crop">
+                                        <div class="info">
+                                            <span title="Produto">Space Email</span>
+                                            <span title="Categoria">Comunicação</span>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide" data-bg-image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=600&fit=crop">
+                                        <div class="info">
+                                            <span title="Produto">Space Navegador</span>
+                                            <span title="Categoria">Navegação Web</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modal de Demonstração de Produto -->
+        <div class="modal" id="productModal">
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <div id="modalProductHeader" class="modal-header"></div>
+                <div id="modalProductBody" class="modal-body"></div>
+            </div>
+        </div>
+        
+        <footer id="contact">
+            <p>© 2025 SES Space. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Dados dos produtos (substituir com dados reais)
+        const productsData = {
+            'artcom-lite': {
+                title: 'Artcom Lite',
+                description: 'Versão leve e essencial para criação básica com IA, ideal para iniciantes e uso sustentável.',
+                features: [
+                    'Criação básica com IA',
+                    'Armazenamento em nuvem (10GB)',
+                    'Suporte básico',
+                    'Materiais 100% recicláveis'
+                ],
+                price: 'R$49/mês',
+                video: 'artcom-lite-demo.mp4',
+                poster: 'artcom-lite-poster.jpg'
+            },
+            'artcom-culture': {
+                title: 'Artcom Culture',
+                description: 'Versão completa para criação de conteúdo com IA generativa e ferramentas colaborativas.',
+                features: [
+                    'Criação de documentos e apresentações com IA',
+                    'Ferramentas de colaboração em tempo real',
+                    'Armazenamento em nuvem (50GB)',
+                    'Suporte prioritário'
+                ],
+                price: 'R$79/mês',
+                video: 'artcom-culture-demo.mp4',
+                poster: 'artcom-culture-poster.jpg'
+            },
+            'artcom-black': {
+                title: 'Artcom Black',
+                description: 'Versão premium com recursos avançados para profissionais criativos e empresas.',
+                features: [
+                    'Todos os recursos da versão Culture',
+                    'IA generativa avançada',
+                    'Armazenamento ilimitado',
+                    'Integrações premium',
+                    'Suporte 24/7'
+                ],
+                price: 'R$159/mês',
+                video: 'artcom-black-demo.mp4',
+                poster: 'artcom-black-poster.jpg'
+            },
+            // Adicionar dados para os outros produtos conforme necessário
+        };
+
+        // ===== CAROUSEL FUNCTIONALITY =====
+        class Carousel {
+            constructor() {
+                this.track = document.getElementById('carouselTrack');
+                this.slides = document.querySelectorAll('.carousel-slide');
+                this.navDots = document.querySelectorAll('.nav-dot');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.progressBar = document.getElementById('progressBar');
+                
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.autoPlayInterval = null;
+                this.progressInterval = null;
+                this.autoPlayDelay = 5000; // 5 segundos
+                
+                this.init();
+            }
+            
+            init() {
+                // Event listeners
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                
+                this.navDots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                });
+                
+                // Pausar autoplay no hover
+                this.track.parentElement.addEventListener('mouseenter', () => this.pauseAutoPlay());
+                this.track.parentElement.addEventListener('mouseleave', () => this.startAutoPlay());
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.prevSlide();
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                });
+                
+                // Touch/swipe support
+                this.addTouchSupport();
+                
+                // Iniciar autoplay
+                this.startAutoPlay();
+            }
+            
+            goToSlide(slideIndex) {
+                this.currentSlide = slideIndex;
+                
+                // Atualizar posição do track
+                const translateX = -slideIndex * 25; // 25% por slide (100% / 4 slides)
+                this.track.style.transform = `translateX(${translateX}%)`;
+                
+                // Atualizar navegação
+                this.updateNavigation();
+                
+                // Reiniciar animações do conteúdo
+                this.restartSlideAnimations();
+                
+                // Reiniciar progress bar
+                this.restartProgressBar();
+            }
+            
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.totalSlides;
+                this.goToSlide(nextIndex);
+            }
+            
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+                this.goToSlide(prevIndex);
+            }
+            
+            updateNavigation() {
+                this.navDots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+            
+            restartSlideAnimations() {
+                // Remover e readicionar animações para reiniciar
+                const currentSlideContent = this.slides[this.currentSlide].querySelector('.slide-content');
+                const elements = currentSlideContent.querySelectorAll('h1, p, .slide-cta');
+                
+                elements.forEach(el => {
+                    el.style.animation = 'none';
+                    el.offsetHeight; // Trigger reflow
+                    el.style.animation = null;
+                });
+            }
+            
+            restartProgressBar() {
+                this.progressBar.style.animation = 'none';
+                this.progressBar.offsetHeight; // Trigger reflow
+                this.progressBar.style.animation = `progressBar ${this.autoPlayDelay}ms linear`;
+            }
+            
+            startAutoPlay() {
+                this.pauseAutoPlay(); // Limpar interval anterior
+                this.autoPlayInterval = setInterval(() => {
+                    this.nextSlide();
+                }, this.autoPlayDelay);
+                this.restartProgressBar();
+            }
+            
+            pauseAutoPlay() {
+                if (this.autoPlayInterval) {
+                    clearInterval(this.autoPlayInterval);
+                    this.autoPlayInterval = null;
+                }
+                this.progressBar.style.animationPlayState = 'paused';
+            }
+            
+            addTouchSupport() {
+                let startX = 0;
+                let endX = 0;
+                
+                this.track.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    this.pauseAutoPlay();
+                });
+                
+                this.track.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].clientX;
+                    const diffX = startX - endX;
+                    
+                    // Minimum swipe distance
+                    if (Math.abs(diffX) > 50) {
+                        if (diffX > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                    
+                    this.startAutoPlay();
+                });
+            }
+        }
+        
+        // Inicializar carousel quando DOM carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            new Carousel();
+        });
+
+        // Menu Mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            navMenu.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+        
+        // Scroll Header
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Modal de Detalhes do Produto
+        const productModal = document.getElementById('productModal');
+        const modalProductHeader = document.getElementById('modalProductHeader');
+        const modalProductBody = document.getElementById('modalProductBody');
+        
+        document.querySelectorAll('.product-item-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product');
+                const productData = productsData[productId];
+                
+                if (productData) {
+                    // Limpar modais anteriores
+                    modalProductHeader.innerHTML = '';
+                    modalProductBody.innerHTML = '';
+                    
+                    // Criar header do modal
+                    const header = document.createElement('div');
+                    header.className = 'product-title-container';
+                    header.innerHTML = `
+                        <div class="product-icon">
+                            <i class="fas fa-${productId.includes('artcom') ? 'magic' : 
+                                            productId.includes('spacearte') ? 'palette' : 
+                                            productId.includes('feedspace') ? 'users' : 
+                                            productId.includes('spaceemail') ? 'envelope' : 
+                                            'globe'}"></i>
+                        </div>
+                        <h2 class="product-title">${productData.title}</h2>
+                    `;
+                    
+                    modalProductHeader.appendChild(header);
+                    
+                    // Criar body do modal
+                    const body = document.createElement('div');
+                    body.innerHTML = `
+                        <p class="version-description">${productData.description}</p>
+                        <div class="demo-video">
+                            <video controls poster="${productData.poster}">
+                                <source src="${productData.video}" type="video/mp4">
+                                Seu navegador não suporta vídeos HTML5.
+                            </video>
+                        </div>
+                        <ul class="key-features">
+                            ${productData.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        <div class="product-footer">
+                            <div class="price">
+                                <span class="current">${productData.price}</span>
+                            </div>
+                        </div>
+                        <a href="#" class="cta-button" style="width:100%; text-align:center; margin-top:15px;">Experimente Grátis</a>
+                    `;
+                    
+                    modalProductBody.appendChild(body);
+                    
+                    // Mostrar modal
+                    productModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+        
+        document.querySelector('#productModal .close-modal').addEventListener('click', function() {
+            productModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === productModal) {
+                productModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Smooth scroll para âncoras
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
